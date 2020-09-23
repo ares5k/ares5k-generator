@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration scan="true" scanPeriod="10 seconds">
+    <contextName>ares5k-generator</contextName>
+
+    <!-- spring-boot彩色日志配置 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <!-- 自定义属性-日期滚动日志文件-内容格式 -->
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
+    <!-- 自定义属性-控制台日志-彩色内容格式 -->
+    <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    <!-- 设置控制台日志 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 设置日期滚动日志 -->
+    <appender name="error-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志格式 -->
+        <encoder>
+            <pattern>${pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 日志级别 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- 生成策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/var/ares5k-generator/generator-log/error-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 启用日志 -->
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="error-file"/>
+    </root>
+</configuration>
