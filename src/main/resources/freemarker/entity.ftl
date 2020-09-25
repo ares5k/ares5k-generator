@@ -16,6 +16,10 @@ package ${packageName}.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
     </#if>
+    <#if !ignoreNull??>
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+    </#if>
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
 </#if>
@@ -55,18 +59,21 @@ public class ${fileName} {
      */
     <#if mybatisPlus??>
         <#if primaryKeyCount == 1>
-            <#if columnInfo.primaryKey == true>
+            <#if columnInfo.primaryKey>
     @TableId(type = IdType.ID_WORKER_STR)
             </#if>
         </#if>
-    </#if>
-    <#if mybatisPlus??>
         <#if columnInfo.columnName == 'delFlag'>
     @TableLogic
         </#if>
         <#if columnInfo.columnName == 'version'>
     @Version
         </#if>
+    <#if !columnInfo.primaryKey>
+        <#if !ignoreNull??>
+    @TableField(strategy = FieldStrategy.IGNORED)
+        </#if>
+    </#if>
     </#if>
     private ${columnInfo.columnType} ${columnInfo.columnName};
 </#list>

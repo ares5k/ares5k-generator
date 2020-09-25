@@ -139,6 +139,12 @@
                           <#if (generatorVo.mybatisPlus)?? && generatorVo.mybatisPlus == "mybatis-plus"> checked</#if>
                         />mybatis-plus</label>
                     </div>
+                    <div id="ignoreNullDiv" class="col-sm-5" style="display: none" data-toggle="tooltip" title="空字段是否更新">
+                      <label class="checkbox-inline">
+                        <input id="ignoreNull" name="ignoreNull" type="checkbox" value="ignoreNull"
+                                <#if (generatorVo.ignoreNull)?? && generatorVo.ignoreNull == "ignoreNull"> checked</#if>
+                        />更新时忽略空值</label>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -235,9 +241,13 @@
 <script>
   <#-- 回显时, 选中表名前的复选框 -->
   <#if (generatorVo.checkedTableNameList)??>
-    <#list generatorVo.checkedTableNameList as tableName>
-      $("#${tableName}").prop("checked", "true");
-    </#list>
+  <#list generatorVo.checkedTableNameList as tableName>
+    $("#${tableName}").prop("checked", "true")
+  </#list>
+  </#if>
+  <#-- 回显时, 是否显示 更新时忽略空值 复选框 -->
+  <#if (generatorVo.mybatisPlus)??>
+    $("#ignoreNullDiv").css("display", "inline")
   </#if>
   <#-- 包换分的鼠标悬停提示 -->
   $('[data-toggle="tooltip"]').tooltip()
@@ -258,8 +268,17 @@
   })
   <#-- 复选框模拟单选 -->
   $("input[name='pathPattern']").on('click', function () {
-    $("input[name='pathPattern']").prop("checked", false);
-    $(this).prop("checked", true);
+    $("input[name='pathPattern']").prop("checked", false)
+    $(this).prop("checked", true)
   });
+  <!-- mybatis-plus和更新时忽略空值联动 -->
+  $('#mybatisPlus').click(() => {
+    if ($('#mybatisPlus').is(":checked")) {
+      $('#ignoreNullDiv').css("display", "inline")
+    } else {
+      $('#ignoreNullDiv').css("display", "none")
+      $('#ignoreNull').prop("checked", false)
+    }
+  })
 </script>
 </html>

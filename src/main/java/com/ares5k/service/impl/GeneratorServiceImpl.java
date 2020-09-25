@@ -285,6 +285,8 @@ public class GeneratorServiceImpl implements GeneratorService {
         templateData.setColumnInfoList(columnInfoList);
         //是否是联合主键, 联合主键时不使用mybatis-plus自动生成ID
         templateData.setPrimaryKeyCount(columnInfoList.stream().filter(ColumnInfo::isPrimaryKey).count());
+        //更新时忽略空值
+        templateData.setIgnoreNull(generatorVo.getIgnoreNull());
         return templateData;
     }
 

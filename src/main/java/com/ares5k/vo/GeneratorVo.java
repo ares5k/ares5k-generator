@@ -56,6 +56,11 @@ public class GeneratorVo extends DBInfo {
     private String ignorePrefix;
 
     /**
+     * Mybatis-Plus更新时忽视空值
+     */
+    private String ignoreNull;
+
+    /**
      * 画面选中的表名-即需要自动生成代码的表
      */
     private List<String> checkedTableNameList;

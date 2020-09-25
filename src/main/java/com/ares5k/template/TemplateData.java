@@ -49,6 +49,11 @@ public class TemplateData {
     private String fileNameLower;
 
     /**
+     * Mybatis-Plus更新时忽视空值
+     */
+    private String ignoreNull;
+
+    /**
      * 包名
      */
     private String packageName;
