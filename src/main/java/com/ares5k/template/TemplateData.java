@@ -34,6 +34,11 @@ public class TemplateData {
     private String mybatisPlus;
 
     /**
+     * 表名
+     */
+    private String tableName;
+
+    /**
      * 文件名 驼峰
      */
     private String fileName;

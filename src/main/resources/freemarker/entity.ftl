@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
     </#if>
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
 </#if>
@@ -49,6 +50,9 @@ import ${pkg};
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+</#if>
+<#if mybatisPlus??>
+@TableName("${tableName}")
 </#if>
 public class ${fileName} {
 <#if columnInfoList??>

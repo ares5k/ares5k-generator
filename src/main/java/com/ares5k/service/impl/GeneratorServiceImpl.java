@@ -40,7 +40,6 @@ public class GeneratorServiceImpl implements GeneratorService {
      * 查询数据库中所有表的定义信息
      *
      * @param generatorVo 画面参数接收及响应用
-     * @return GeneratorVo 画面参数接收及响应用
      */
     @Override
     public GeneratorVo connectAndGetTables(GeneratorVo generatorVo) {
@@ -287,6 +286,8 @@ public class GeneratorServiceImpl implements GeneratorService {
         templateData.setPrimaryKeyCount(columnInfoList.stream().filter(ColumnInfo::isPrimaryKey).count());
         //更新时忽略空值
         templateData.setIgnoreNull(generatorVo.getIgnoreNull());
+        //设置表名
+        templateData.setTableName(tableName);
         return templateData;
     }
 
