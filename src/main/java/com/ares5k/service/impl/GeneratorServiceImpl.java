@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -265,7 +266,21 @@ public class GeneratorServiceImpl implements GeneratorService {
         if (StrUtil.isNotEmpty(generatorVo.getIgnorePrefix())) {
             tableNameNoPreFix = StrUtil.removePrefixIgnoreCase(tableName, generatorVo.getIgnorePrefix());
         }
-
+        //需要插更填充的字段
+        if (StrUtil.isNotEmpty(generatorVo.getInsertUpdateFill())) {
+            templateData.setInsertUpdateFillList(Arrays.asList(generatorVo.getInsertUpdateFill().split(",")));
+        }
+        //需要插入填充的字段
+        if (StrUtil.isNotEmpty(generatorVo.getInsertFill())) {
+            List<String> insertList = Arrays.asList(generatorVo.getInsertFill().split(","));
+            //差集
+            if (StrUtil.isNotEmpty(generatorVo.getInsertUpdateFill())) {
+                List<String> insertUpdateList = Arrays.asList(generatorVo.getInsertUpdateFill().split(","));
+                templateData.setInsertFillList(insertList.parallelStream().filter(str -> !insertUpdateList.contains(str)).collect(Collectors.toList()));
+            } else {
+                templateData.setInsertFillList(insertList);
+            }
+        }
         //文件名首字母小写
         templateData.setFileNameFirstLower(StrUtil.lowerFirst(StrUtil.toCamelCase(tableNameNoPreFix)));
         //文件名全小写

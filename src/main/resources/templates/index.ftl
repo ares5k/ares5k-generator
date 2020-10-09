@@ -139,12 +139,6 @@
                           <#if (generatorVo.mybatisPlus)?? && generatorVo.mybatisPlus == "mybatis-plus"> checked</#if>
                         />mybatis-plus</label>
                     </div>
-                    <div id="ignoreNullDiv" class="col-sm-5" style="display: none" data-toggle="tooltip" title="空字段是否更新">
-                      <label class="checkbox-inline">
-                        <input id="ignoreNull" name="ignoreNull" type="checkbox" value="ignoreNull"
-                                <#if (generatorVo.ignoreNull)?? && generatorVo.ignoreNull == "ignoreNull"> checked</#if>
-                        />更新时忽略空值</label>
-                    </div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -219,6 +213,31 @@
                     </div>
                   </div>
                 </div>
+                <div id="mybatisPlusCustom" style="display: none">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="insertFill">插入填充:</label>
+                    <div class="col-sm-9">
+                      <input class="form-control" id="insertFill" name="insertFill" type="text" placeholder="选填项,驼峰逗号分隔 例: createTime,createUid" value="${(generatorVo.insertFill)!''}"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="insertUpdateFill">插更填充:</label>
+                    <div class="col-sm-9">
+                      <input class="form-control" id="insertUpdateFill" name="insertUpdateFill" type="text" placeholder="选填项,驼峰逗号分隔 例: modifyTime,modifyUid" value="${(generatorVo.insertUpdateFill)!''}"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">空字段:</label>
+                    <div class="col-sm-9">
+                      <div id="ignoreNullDiv" class="col-sm-3" data-toggle="tooltip" title="更新时是否忽略空字段">
+                        <label class="checkbox-inline">
+                          <input id="ignoreNull" name="ignoreNull" type="checkbox" value="ignoreNull"
+                                  <#if (generatorVo.ignoreNull)?? && generatorVo.ignoreNull == "ignoreNull"> checked</#if>
+                          />忽略</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <#-- 模态体布局 end -->
@@ -247,7 +266,7 @@
   </#if>
   <#-- 回显时, 是否显示 更新时忽略空值 复选框 -->
   <#if (generatorVo.mybatisPlus)??>
-    $("#ignoreNullDiv").css("display", "inline")
+    $("#mybatisPlusCustom").css("display", "inline")
   </#if>
   <#-- 包换分的鼠标悬停提示 -->
   $('[data-toggle="tooltip"]').tooltip()
@@ -274,10 +293,12 @@
   <!-- mybatis-plus和更新时忽略空值联动 -->
   $('#mybatisPlus').click(() => {
     if ($('#mybatisPlus').is(":checked")) {
-      $('#ignoreNullDiv').css("display", "inline")
+      $('#mybatisPlusCustom').css("display", "inline")
     } else {
-      $('#ignoreNullDiv').css("display", "none")
+      $('#mybatisPlusCustom').css("display", "none")
       $('#ignoreNull').prop("checked", false)
+      $('#insertFill').val('')
+      $('#insertUpdateFill').val('')
     }
   })
 </script>

@@ -17,9 +17,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
     </#if>
     <#if !ignoreNull??>
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
     </#if>
+    <#if insertFillList?? || insertUpdateFillList??>
+import com.baomidou.mybatisplus.annotation.FieldFill;
+    </#if>
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
@@ -73,9 +76,44 @@ public class ${fileName} {
         <#if columnInfo.columnName == 'version'>
     @Version
         </#if>
-    <#if !columnInfo.primaryKey>
+    <#if !columnInfo.primaryKey && columnInfo.columnName != 'delFlag' && columnInfo.columnName != 'version'>
+        <#if ignoreNull??>
+            <#if insertFillList??>
+                <#list insertFillList as insertColumn>
+                    <#if insertColumn == columnInfo.columnName>
+    @TableField(fill = FieldFill.INSERT)
+                    </#if>
+                </#list>
+            </#if>
+            <#if insertUpdateFillList??>
+                <#list insertUpdateFillList as updateColumn>
+                    <#if updateColumn == columnInfo.columnName>
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+                    </#if>
+                </#list>
+            </#if>
+        </#if>
         <#if !ignoreNull??>
+            <#assign hadFieldAnnotation="">
+            <#if insertFillList??>
+                <#list insertFillList as isnertColumn>
+                    <#if isnertColumn == columnInfo.columnName>
+                        <#assign hadFieldAnnotation="had">
+    @TableField(strategy = FieldStrategy.IGNORED, fill = FieldFill.INSERT)
+                    </#if>
+                </#list>
+            </#if>
+            <#if insertUpdateFillList??>
+                <#list insertUpdateFillList as updateColumn>
+                    <#if updateColumn == columnInfo.columnName>
+                        <#assign hadFieldAnnotation="had">
+    @TableField(strategy = FieldStrategy.IGNORED, fill = FieldFill.INSERT_UPDATE)
+                    </#if>
+                </#list>
+            </#if>
+            <#if hadFieldAnnotation != 'had'>
     @TableField(strategy = FieldStrategy.IGNORED)
+            </#if>
         </#if>
     </#if>
     </#if>

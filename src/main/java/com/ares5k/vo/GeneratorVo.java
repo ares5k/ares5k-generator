@@ -61,6 +61,16 @@ public class GeneratorVo extends DBInfo {
     private String ignoreNull;
 
     /**
+     * 插入填充
+     */
+    private String insertFill;
+
+    /**
+     * 插更填充
+     */
+    private String insertUpdateFill;
+
+    /**
      * 画面选中的表名-即需要自动生成代码的表
      */
     private List<String> checkedTableNameList;

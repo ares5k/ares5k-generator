@@ -84,6 +84,16 @@ public class TemplateData {
     private String pathPattern;
 
     /**
+     * 插入填充
+     */
+    private List<String> insertFillList;
+
+    /**
+     * 插更填充
+     */
+    private List<String> insertUpdateFillList;
+
+    /**
      * 表字段对应的Java信息集合
      */
     private List<ColumnInfo> columnInfoList;
